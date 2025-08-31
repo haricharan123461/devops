@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>College Event Management</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <nav class="nav" aria-label="Main navigation">
+      <div class="brand">College Events</div>
+      <div class="tabs" role="tablist">
+        <a href="#home" class="tab" data-tab="home" role="tab" aria-selected="true" aria-current="page">Home</a>
+        <a href="#events" class="tab" data-tab="events" role="tab">Events</a>
+        <a href="#host" class="tab" data-tab="host" role="tab">Host</a>
+        <a href="#manage" class="tab" data-tab="manage" role="tab">Manage</a>
+        <a href="#clubs" class="tab" data-tab="clubs" role="tab">Clubs</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home">
+      <h1 class="text-balance">College Event Management</h1>
+      <p class="lead">Host and manage events by students, clubs, and faculty. Handle registrations, attendance, and simple paid tickets.</p>
+
+      <div class="grid cols-4">
+        <div class="card">
+          <h3>Browse Events</h3>
+          <div class="muted">See upcoming events and register</div>
+          <div class="spacious">
+            <button class="btn block" data-nav="#events">View Events</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Host an Event</h3>
+          <div class="muted">Students, clubs, or faculty</div>
+          <div class="spacious">
+            <button class="btn secondary block" data-nav="#host">Create Event</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Manage Attendance</h3>
+          <div class="muted">Check-in attendees with your PIN</div>
+          <div class="spacious">
+            <button class="btn ghost block" data-nav="#manage">Open Manager</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Student Clubs</h3>
+          <div class="muted">Browse and add clubs</div>
+          <div class="spacious">
+            <button class="btn ghost block" data-nav="#clubs">Clubs Directory</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="events" hidden>
+      <div class="between" style="margin-bottom:12px;">
+        <div>
+          <h2>Events</h2>
+          <div class="muted">Search and register for upcoming events.</div>
+        </div>
+        <div class="right" style="flex:1; justify-content:flex-end;">
+          <div class="search" style="max-width:520px; width:100%;">
+            <label for="eventSearch" class="sr-only">Search events</label>
+            <input id="eventSearch" class="input" type="search" placeholder="Search events, host, club..." />
+            <button class="btn ghost" data-nav="#host">Host Event</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="eventsList" class="list">
+         Rendered dynamically 
+      </div>
+    </section>
+
+    <section id="host" hidden>
+      <div class="card">
+        <h2>Host an Event</h2>
+        <div class="muted" style="margin-bottom:12px;">Create events as a student, a club, or faculty.</div>
+
+        <form id="hostForm" novalidate>
+          <div class="form-row">
+            <label for="title">Title</label>
+            <input class="input" id="title" name="title" required />
+          </div>
+
+          <div class="form-row">
+            <label for="description">Description</label>
+            <textarea class="textarea" id="description" name="description" required></textarea>
+          </div>
+
+          <div class="form-row cols-3">
+            <div>
+              <label for="date">Date</label>
+              <input class="input" id="date" type="date" name="date" required />
+            </div>
+            <div>
+              <label for="time">Time</label>
+              <input class="input" id="time" type="time" name="time" required />
+            </div>
+            <div>
+              <label for="location">Location</label>
+              <input class="input" id="location" name="location" required />
+            </div>
+          </div>
+
+          <div class="form-row cols-2">
+            <div>
+              <label for="capacity">Capacity (optional)</label>
+              <input class="input" id="capacity" name="capacity" type="number" min="1" placeholder="e.g. 100" />
+            </div>
+            <div>
+              <label for="hostType">Host Type</label>
+              <select class="select" id="hostType" name="hostType">
+                <option>Student</option>
+                <option>Club</option>
+                <option>Faculty</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row cols-2">
+            <div>
+              <label for="hostName">Host Name</label>
+              <input class="input" id="hostName" name="hostName" placeholder="Your name or club" required />
+            </div>
+            <div>
+              <label for="price">Price (cents)</label>
+              <input class="input" id="price" name="price" type="number" min="0" placeholder="e.g. 500 = $5.00" disabled />
+              <div class="hint">Enable with “Paid event”.</div>
+            </div>
+          </div>
+
+          <div class="form-row cols-2" style="align-items:center;">
+            <div class="between">
+              <label for="paid">Paid event</label>
+              <input id="paid" type="checkbox" />
+            </div>
+            <div class="between">
+              <label for="image">Event Image (optional)</label>
+              <input id="image" type="file" accept="image/*" />
+            </div>
+          </div>
+
+          <div id="imagePreview" class="hint" aria-live="polite"></div>
+
+          <div class="form-row">
+            <button class="btn primary" type="submit">Create Event</button>
+          </div>
+
+          <div id="hostResult" class="hint" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+
+    <section id="manage" hidden>
+      <div class="card">
+        <h2>Attendance Manager</h2>
+        <div class="muted">Unlock access with your Event ID and PIN.</div>
+
+        <form id="unlockForm" class="form-row cols-3" style="margin-top:12px;">
+          <div>
+            <label for="unlockEventId">Event ID</label>
+            <input id="unlockEventId" class="input" required />
+          </div>
+          <div>
+            <label for="unlockPin">PIN</label>
+            <input id="unlockPin" class="input" required />
+          </div>
+          <div style="align-self:end;">
+            <button class="btn primary" type="submit">Unlock</button>
+          </div>
+        </form>
+
+        <div id="managerPanel" hidden>
+          <hr style="border:none; border-top:1px solid var(--border); margin:16px 0;" />
+          <div id="managerHeader" class="between"></div>
+          <div class="form-row cols-2" style="margin-top:12px;">
+            <div class="card">
+              <h3>Add Attendee</h3>
+              <form id="attendeeForm" class="form-row">
+                <div>
+                  <label for="attendeeName">Name</label>
+                  <input id="attendeeName" class="input" placeholder="Jane Student" required />
+                </div>
+                <button class="btn success" type="submit">Check In</button>
+              </form>
+              <div class="hint">Checked-in count updates instantly.</div>
+            </div>
+
+            <div class="card">
+              <h3>Attendees</h3>
+              <ul id="attendeesList" class="list" aria-live="polite"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="clubs" hidden>
+      <div class="grid cols-2">
+        <div class="card">
+          <h2>Clubs</h2>
+          <div class="muted">Browse existing clubs.</div>
+          <div id="clubsList" class="list" style="margin-top:12px;"></div>
+        </div>
+
+        <div class="card">
+          <h2>Add a Club</h2>
+          <div class="muted">Make it available for hosting</div>
+          <form id="clubForm" class="form-row" style="margin-top:12px;">
+            <div>
+              <label for="clubName">Club Name</label>
+              <input id="clubName" class="input" required />
+            </div>
+            <div>
+              <label for="clubDesc">Description</label>
+              <textarea id="clubDesc" class="textarea" required></textarea>
+            </div>
+            <button class="btn primary" type="submit">Add Club</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="index.js"></script>
+</body>
+</html>
